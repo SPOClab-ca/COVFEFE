@@ -9,7 +9,7 @@ from nodes import set_logger
 @click.command()
 @click.option("--in_folder", "-i", help="Path to input folder", required=True)
 @click.option("--out_folder", "-o", help="Path to output folder", required=True)
-@click.option("--pipeline", "-p", help="Pipeline to execute", required=True)
+@click.option("--pipeline", "-p", help="Pipeline to execute", required=True, type=click.Choice(sorted(list(pipeline_registry.all))))
 @click.option("--num_threads", "-n", help="Number of concurrent threads to use for processing", type=click.INT, default=1)
 @click.option("--log_file", "-l", help="File to log to", required=False)
 def main(in_folder, out_folder, pipeline, num_threads, log_file=None):
@@ -22,12 +22,8 @@ def main(in_folder, out_folder, pipeline, num_threads, log_file=None):
 
     set_logger(log_file)
 
-    if pipeline in pipeline_registry.all:
-        p = pipeline_registry.all[pipeline](in_folder, out_folder, num_threads)
-        p.run()
-    else:
-        print("Pipeline %s not found." % (pipeline, ))
-        print("Known pipelines are %s" % ", ".join(pipeline_registry.all))
+    p = pipeline_registry.all[pipeline](in_folder, out_folder, num_threads)
+    p.run()
 
 
 if __name__ == '__main__':

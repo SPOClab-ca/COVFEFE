@@ -16,3 +16,5 @@ python covfefe.py -i path/to/in/folder -o /path/to/put/out/files -p pipeline_nam
 ```
 
 where pipeline_name is the name of function that's been added to the registry (for example, ```opensmile_is10_lld```)
+
+Running ```python covfefe.py --help``` will print help options and give a list of available pipelines to run.
