@@ -15,4 +15,4 @@ To execute a pipeline, simply run
 python covfefe.py -i path/to/in/folder -o /path/to/put/out/files -p pipeline_name
 ```
 
-where pipeline_name is the name of function that's been added to the registry (for example, opensmile_is10_lld)
+where pipeline_name is the name of function that's been added to the registry (for example, ```opensmile_is10_lld```)
