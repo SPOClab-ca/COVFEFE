@@ -9,7 +9,7 @@ class FileOutputNode(Node):
     def __init__(self, name, out_dir, **kwargs):
         super().__init__(name, **kwargs)
         self.out_dir = os.path.join(out_dir, self.name)
-        file_utils.ensure_dir(out_dir)
+        file_utils.ensure_dir(self.out_dir)
 
     def derive_new_file_path(self, old_file, new_ext=None):
         old_fname = os.path.basename(old_file)
