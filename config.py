@@ -1,0 +1,1 @@
+OPENSMILE_HOME = "/Users/dl/programs/opensmile-2.3.0"
