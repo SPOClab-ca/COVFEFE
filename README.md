@@ -1,5 +1,5 @@
 # COVFEFE
-COre Variable Feature Extraction Feature Extraction
+COre Variable Feature Extraction Feature Extractor
 
 A tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph where each node is a 
 processing task that sends it's ouptut to the next node in the graph.
