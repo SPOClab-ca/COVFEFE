@@ -1,5 +1,5 @@
 # COVFEFE
-COre Variable Feature Extraction Feature Extraction
+COre Variable Feature Extraction Feature Extractor
 
 A tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph where each node is a 
 processing task that sends it's ouptut to the next node in the graph.
@@ -16,3 +16,5 @@ python covfefe.py -i path/to/in/folder -o /path/to/put/out/files -p pipeline_nam
 ```
 
 where pipeline_name is the name of function that's been added to the registry (for example, ```opensmile_is10_lld```)
+
+Running ```python covfefe.py --help``` will print help options and give a list of available pipelines to run.
