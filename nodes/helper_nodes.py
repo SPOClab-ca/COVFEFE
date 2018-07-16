@@ -3,7 +3,7 @@ from pyPiper import Node
 import os
 
 from utils import file_utils
-import nodes
+from utils.logger import get_logger
 
 class FileOutputNode(Node):
     def __init__(self, name, out_dir, **kwargs):
@@ -22,7 +22,7 @@ class FileOutputNode(Node):
         return os.path.join(self.out_dir, new_fname)
 
     def log(self, level, msg):
-        nodes.get_logger().log(level=level, msg="%s: %s" % (self.name, msg))
+        get_logger().log(level=level, msg="%s: %s" % (self.name, msg))
 
 
 

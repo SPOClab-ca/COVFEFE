@@ -5,6 +5,7 @@ import logging
 
 from nodes.helper_nodes import FileOutputNode
 from utils import file_utils
+from utils import signal_processing as sp
 from utils.shell_run import shell_run
 from config import OPENSMILE_HOME
 
@@ -135,3 +136,50 @@ class IS10_Paraling_lld(OpenSmileRunner):
 
     def get_command(self, wav_file, out_file):
         return [self.os_exec, "-C", self.conf_file, "-I", wav_file, "-lldcsvoutput", out_file, "-nologfile", "-noconsoleoutput", "-appendcsv", "0"]
+
+
+class SplitSements(FileOutputNode):
+    """
+       segment_mapping_fn is a pointer to a function that takes as input a file and sample rate and returns a
+       list of all the segments in that file in the format [(start1, end1, segname1), (start2, end2, segname2), ...] where
+       start and end are in given in samples. Each tuple in the list can also have a 4th item, which can be any string.
+       This string will get saved in segname.txt
+
+        This is useful for isolating events of interest in audio files. For example, if the segment mapping
+        function returns a list of where all speech occurs in the input audio, this will isolate all occurrences of
+        speech into individual files. The 4th item may contain the annotation of what was said in the segment.
+    """
+    def setup(self, segment_mapping_fn):
+        self.segment_mapping_fn = segment_mapping_fn
+
+    def run(self, in_file):
+        self.log(logging.INFO, "Starting %s" % (in_file))
+
+        if not in_file.endswith(".wav"):
+            self.log(logging.ERROR, "Failed %s. Not wav file" % (in_file))
+            return
+
+        sr, original_data = sp.read_wave(in_file, first_channel=True)
+
+        segments = self.segment_mapping_fn(in_file, sr)
+
+        for segment in segments:
+            if len(segment) == 3:
+                start, end, seg_name = segment
+                extra_info = None
+            elif len(segment) == 4:
+                start, end, seg_name, extra_info = segment
+            else:
+                self.log(logging.ERROR, "Failed %s. Segment length must be 3 or 4" % (in_file))
+                return
+
+            seg_path = os.path.join(self.out_dir, "%s.wav" % seg_name)
+            sp.write_wav(seg_path, sr, original_data[start:end])
+
+            extra_path = None
+            if extra_info:
+                extra_path = os.path.join(self.out_dir, "%s.txt" % seg_name)
+                with open(extra_path, "w") as f:
+                    f.write(extra_info)
+
+            self.emit([seg_path, extra_path])
