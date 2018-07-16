@@ -4,7 +4,7 @@ import os
 
 from pipelines import pipeline_registry
 
-from nodes import set_logger
+from utils.logger import set_logger
 
 @click.command()
 @click.option("--in_folder", "-i", help="Path to input folder", required=True)
