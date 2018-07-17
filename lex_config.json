@@ -1,0 +1,15 @@
+{
+  "utterance_sep": " . ",
+  "path_output_lu_parses": "tmp/lu_parses",
+  "path_output_parses": "tmp/parses",
+  "do_wnic": true,
+  "path_output_rst": "tmp/rst",
+  "do_lexical": true,
+  "do_syntactic": true,
+  "do_semantic": true,
+  "do_pragmatic": true,
+  "lexical_list": null,
+  "syntactic_list": null,
+  "semantic_list": null,
+  "pragmatic_list": null
+}
