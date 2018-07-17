@@ -36,10 +36,13 @@ def find_files(path, ext="", prefix=""):
     return [os.path.join(path, x) for x in os.listdir(path) if x.endswith(ext) and x.startswith(prefix)]
 
 
-def locate_file(file_name, possible_paths=[]):
+def locate_file(file_name, possible_paths=[], use_path=False):
     # Is file_name an absolute path?
     if os.path.isfile(file_name):
         return file_name
+
+    if use_path:
+        possible_paths += os.environ["PATH"].split(":")
 
     for possible_path in possible_paths:
         p = os.path.join(possible_path, file_name)

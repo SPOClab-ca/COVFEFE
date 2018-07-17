@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import os
 import logging
 
-from nodes.helper_nodes import FileOutputNode
+from nodes.helper import FileOutputNode
 from utils import file_utils
 from utils import signal_processing as sp
 from utils.shell_run import shell_run
@@ -98,7 +98,7 @@ class OpenSmileRunner(FileOutputNode):
         self.out_flag = out_flag
         self.out_ext = out_ext
 
-        self.opensmile_exec = file_utils.locate_file("SMILExtract", [OPENSMILE_HOME])
+        self.opensmile_exec = file_utils.locate_file("SMILExtract", [OPENSMILE_HOME, os.path.join(OPENSMILE_HOME, "bin")], use_path=True)
 
 
     def run(self, in_file):

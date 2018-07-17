@@ -15,7 +15,11 @@ class FileOutputNode(Node):
         old_fname = os.path.basename(old_file)
 
         if new_ext is not None:
-            new_fname = file_utils.strip_ext(old_fname) + "." + new_ext
+            ext = new_ext
+            if not ext.startswith("."):
+                ext = "." + ext
+
+            new_fname = file_utils.strip_ext(old_fname) + ext
         else:
             new_fname = old_fname
 

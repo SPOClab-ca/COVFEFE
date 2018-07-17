@@ -1,3 +1,6 @@
+# HAS TO BE FIRST LINE
+import matlab.engine
+
 import click
 
 import os
