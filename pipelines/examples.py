@@ -2,7 +2,6 @@ from pyPiper import Pipeline
 
 from pipelines import pipeline_registry
 from nodes import helper, audio
-from nodes import matlab as mtlb
 from utils.segment_mappers import TxtSegments, EafSegments
 
 @pipeline_registry
@@ -30,6 +29,8 @@ def opensmile_is10_lld(in_folder, out_folder, num_threads):
 
 @pipeline_registry
 def matlab(in_folder, out_folder, num_threads):
+    from nodes import matlab as mtlb
+
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
 
     is10 = mtlb.MatlabRunner("matlab_acoustics", out_dir=out_folder, function="extract_acoustics", out_ext=".txt")

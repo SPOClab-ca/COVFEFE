@@ -1,5 +1,8 @@
 # HAS TO BE FIRST LINE
-import matlab.engine
+try:
+    import matlab.engine
+except ImportError:
+    pass
 
 import click
 
