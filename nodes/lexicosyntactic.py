@@ -1,5 +1,6 @@
 import logging
 import os
+import datetime
 
 from nodes.helper import FileOutputNode
 from utils import file_utils
@@ -13,11 +14,13 @@ class Lexicosyntactic(FileOutputNode):
     def setup(self, cfg_file, filler_dir=None):
         cfg = file_utils.load_json_file(cfg_file)
 
+        path_output_parses = os.path.join(self.out_dir, "stanford_parses")
+        path_output_lu_parses = os.path.join(self.out_dir, "lu_parses")
+        path_output_rst = os.path.join(self.out_dir, "rst_output")
+        self.output_csv = os.path.join(self.out_dir, 'textfeatures%s.csv' % (datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")))
+
         utterance_sep = cfg.get("utterance_sep", " . ")
-        path_output_lu_parses = cfg.get("path_output_lu_parses", "")
-        path_output_parses = cfg.get("path_output_parses", "")
         do_wnic = cfg.get("do_wnic", True)
-        path_output_rst = cfg.get("path_output_rst", "")
         do_lexical = cfg.get("do_lexical", True)
         do_syntactic = cfg.get("do_syntactic", True)
         do_semantic = cfg.get("do_semantic", True)

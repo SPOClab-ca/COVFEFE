@@ -116,8 +116,10 @@ class FeatureExtractor(object):
         '''
 
         self.utterance_sep = utterance_sep
-        self.output_parse_dir = path_output_parses
-        self.output_lu_parse_dir = path_output_lu_parses
+
+        self.output_rst_dir = os.path.abspath(path_output_rst)
+        self.output_parse_dir = os.path.abspath(path_output_parses)
+        self.output_lu_parse_dir = os.path.abspath(path_output_lu_parses)
 
         self.pos_tagger_path = pos_tagger_path
         self.parser_path = parser_path
@@ -125,7 +127,6 @@ class FeatureExtractor(object):
         self.path_to_mpqa_lexicon = path_to_mpqa_lexicon
         self.path_to_rst_python = path_to_rst_python
         self.path_to_rst = path_to_rst
-        self.output_rst_dir = path_output_rst
         self.path_to_stanford_cp = path_to_stanford_cp
         self.path_to_lda_model = path_to_lda_model
         self.path_to_lda_wordids = path_to_lda_wordids
@@ -143,6 +144,7 @@ class FeatureExtractor(object):
         file_utils.ensure_dir(self.output_lu_parse_dir)
         file_utils.ensure_dir(self.output_rst_dir)
 
+        # self.transcript_set = transcript.TranscriptSet(dataset=[])
 
         # Get lexical norms
         if path_to_freq_norms is not None:
@@ -248,6 +250,8 @@ class FeatureExtractor(object):
 
         # Add all extracted features to transcript
         t.add_feature(features)
+
+        # self.transcript_set.append(t)
 
         # Assume all transcripts in the set have the same features in the same order
         headers = [feat.name for feat in t.feature_set]
@@ -545,7 +549,7 @@ class FeatureExtractor(object):
         # Assume all transcripts in the set have the same features in the same order
         if self.transcript_set.get_length() > 0 and self.transcript_set[0].feature_set:
             headers = ['FileID'] + [feat.name for feat in self.transcript_set[0].feature_set]
-            with open(output_csv, 'wb') as csvfout:
+            with open(output_csv, 'w') as csvfout:
                 csvwriter = csv.writer(csvfout, delimiter=',', quoting=csv.QUOTE_MINIMAL)
                 csvwriter.writerow(headers)
                 for t in self.transcript_set:
