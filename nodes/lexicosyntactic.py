@@ -11,41 +11,31 @@ import config
 
 class Lexicosyntactic(FileOutputNode):
     # TODO: Figure out and support filler_dir
-    def setup(self, cfg_file, filler_dir=None):
-        cfg = file_utils.load_json_file(cfg_file)
-
+    def setup(self, cfg_file, utterance_sep=" . ", filler_dir=None):
         path_output_parses = os.path.join(self.out_dir, "stanford_parses")
         path_output_lu_parses = os.path.join(self.out_dir, "lu_parses")
         path_output_rst = os.path.join(self.out_dir, "rst_output")
         self.output_csv = os.path.join(self.out_dir, 'textfeatures%s.csv' % (datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")))
 
-        utterance_sep = cfg.get("utterance_sep", " . ")
-        do_wnic = cfg.get("do_wnic", True)
-        do_lexical = cfg.get("do_lexical", True)
-        do_syntactic = cfg.get("do_syntactic", True)
-        do_semantic = cfg.get("do_semantic", True)
-        do_pragmatic = cfg.get("do_pragmatic", True)
-        lexical_list = cfg.get("lexical_list", None)
-        syntactic_list = cfg.get("syntactic_list", None)
-        semantic_list = cfg.get("semantic_list", None)
-        pragmatic_list = cfg.get("pragmatic_list", None)
+        do_wnic = True
 
-        parser_path = cfg.get("parser_path", config.stanford_parser_path)
-        pos_tagger_path = cfg.get("pos_tagger_path", config.stanford_pos_path)
-        lu_analyzer_path = cfg.get("lu_analyzer_path", config.lu_analyzer_path)
-        path_to_stanford_cp = cfg.get("path_to_stanford_cp", config.path_to_stanford_cp)
-        cfg_rules_path = cfg.get("cfg_rules_path", config.cfg_rules_path)
-        path_to_dictionary = cfg.get("path_to_dictionary", config.path_to_dictionary)
-        path_to_freq_norms = cfg.get("path_to_freq_norms", config.path_to_freq_norms)
-        path_to_image_norms = cfg.get("path_to_image_norms", config.path_to_image_norms)
-        path_to_anew = cfg.get("path_to_anew", config.path_to_anew)
-        path_to_warringer = cfg.get("path_to_warringer", config.path_to_warringer)
-        path_to_mpqa_lexicon = cfg.get("path_to_mpqa_lexicon", config.path_to_mpqa_lexicon)
-        path_to_rst_python = cfg.get("path_to_rst_python", config.path_to_rst_python)
-        path_to_rst = cfg.get("path_to_rst", config.path_to_rst)
-        path_to_lda_model = cfg.get("path_to_lda_model", config.path_to_lda_model)
-        path_to_lda_wordids = cfg.get("path_to_lda_wordids", config.path_to_lda_wordids)
+        lexical_list, do_lexical, pragmatic_list, do_pragmatic, semantic_list, do_semantic, syntactic_list, do_syntactic = load_conf(cfg_file)
 
+        parser_path = config.stanford_parser_path
+        pos_tagger_path = config.stanford_pos_path
+        lu_analyzer_path = config.lu_analyzer_path
+        path_to_stanford_cp = config.path_to_stanford_cp
+        cfg_rules_path = config.cfg_rules_path
+        path_to_dictionary = config.path_to_dictionary
+        path_to_freq_norms = config.path_to_freq_norms
+        path_to_image_norms = config.path_to_image_norms
+        path_to_anew = config.path_to_anew
+        path_to_warringer = config.path_to_warringer
+        path_to_mpqa_lexicon = config.path_to_mpqa_lexicon
+        path_to_rst_python = config.path_to_rst_python
+        path_to_rst = config.path_to_rst
+        path_to_lda_model = config.path_to_lda_model
+        path_to_lda_wordids = config.path_to_lda_wordids
 
         self.filler_dir = filler_dir
         self.pos_tagger_path = pos_tagger_path
@@ -83,6 +73,7 @@ class Lexicosyntactic(FileOutputNode):
 
         self.filler_files = {os.path.basename(file_utils.strip_ext(x)): x for x in os.listdir(self.filler_dir)}
 
+
     def run(self, filepath):
         self.log(logging.INFO, "Starting %s" % (filepath))
 
@@ -105,3 +96,41 @@ class Lexicosyntactic(FileOutputNode):
             self.log(logging.INFO, "Done %s -> %s" % (filepath, out_file))
 
         self.emit(out_file)
+
+
+def get_features_list(features):
+    if len(features) == 1 and features[0] == '':
+        return [], False
+    features_list = []
+    for feature in features:
+        feature_name = feature.strip()
+        if feature_name == 'all':
+            return None, True
+        else:
+            features_list.append(feature_name)
+
+    return features_list, True
+
+
+def load_conf(config_file):
+    if config_file and os.path.exists(config_file):
+        with open(config_file) as f:
+            lines = f.readlines()
+
+        if not len(lines) == 4:
+            print('Error with config file. Using default features.')
+
+        else:
+            lexical_features = lines[0].split('#')[0].split(',')
+            pragmatic_features = lines[1].split('#')[0].split(',')
+            semantic_features = lines[2].split('#')[0].split(',')
+            syntactic_features = lines[3].split('#')[0].split(',')
+
+            lexical_list, do_lexical = get_features_list(lexical_features)
+            pragmatic_list, do_pragmatic = get_features_list(pragmatic_features)
+            semantic_list, do_semantic = get_features_list(semantic_features)
+            syntactic_list, do_syntactic = get_features_list(syntactic_features)
+
+            return lexical_list, do_lexical, pragmatic_list, do_pragmatic, semantic_list, do_semantic, syntactic_list, do_syntactic
+
+    return None, True, None, True, None, True, None, True

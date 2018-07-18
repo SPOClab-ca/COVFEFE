@@ -45,7 +45,7 @@ def lex(in_folder, out_folder, num_threads):
 
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".txt")
 
-    feats = lexicosyntactic.Lexicosyntactic("lexicosyntactic", out_dir=out_folder, cfg_file="lex_config.json")
+    feats = lexicosyntactic.Lexicosyntactic("lexicosyntactic", out_dir=out_folder, cfg_file="default.conf")
 
     p = Pipeline(file_finder | feats, n_threads=num_threads, quiet=True)
 
