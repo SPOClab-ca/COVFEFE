@@ -1,7 +1,7 @@
 from pyPiper import Pipeline
 
 from pipelines import pipeline_registry
-from nodes import helper, audio
+from nodes import helper, audio, lexicosyntactic
 from utils.segment_mappers import TxtSegments, EafSegments
 
 @pipeline_registry
@@ -36,5 +36,17 @@ def matlab(in_folder, out_folder, num_threads):
     is10 = mtlb.MatlabRunner("matlab_acoustics", out_dir=out_folder, function="extract_acoustics", out_ext=".txt")
 
     p = Pipeline(file_finder | is10, n_threads=num_threads, quiet=True)
+
+    return p
+
+@pipeline_registry
+def lex(in_folder, out_folder, num_threads):
+    from nodes import matlab as mtlb
+
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".txt")
+
+    feats = lexicosyntactic.Lexicosyntactic("lexicosyntactic", out_dir=out_folder, cfg_file="default.conf")
+
+    p = Pipeline(file_finder | feats, n_threads=num_threads, quiet=True)
 
     return p
