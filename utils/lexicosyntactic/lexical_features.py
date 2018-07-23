@@ -394,13 +394,26 @@ def get_liwc_features(transcript_utterances, nan_value):
     transcript_utterances : list of lists of strings (words); each row is a plaintext utterance in the transcript.                                                                                        
     nan_value: int, value for NaN    
     '''
+
+    error_liwc_keys = ['liwc_fail', 'receptiviti_fail']
+    error_liwc_features = {};
+    error_liwc_features['liwc_fail'] = nan_value
+    error_liwc_features['receptiviti_fail'] = nan_value
+
     liwc_keys = [];
     liwc_features = {};
 
+    try:
+        import secrets
+        api_key = secrets.receptiviti_api_key
+        api_secret = secrets.receptiviti_api_secret
+        iPerson = secrets.receptiviti_iPerson
+    except:
+        get_logger().log(logging.ERROR, "Unable to import secrets for receptiviti")
+
+        return error_liwc_keys, error_liwc_features
+
     sServer = 'https://app.receptiviti.com'
-    api_key = '***REMOVED***'
-    api_secret = '***REMOVED***'
-    iPerson = '***REMOVED***'
     url = '%s/v2/api/person/%s/contents' % (sServer, iPerson)
 
     allUtts = ''
@@ -425,9 +438,7 @@ def get_liwc_features(transcript_utterances, nan_value):
 
     if response.status_code != 200:
         get_logger().log(logging.ERROR, "Response code %s from Receptiviti" % response.status_code)
-        liwc_keys = ['liwc_fail', 'receptiviti_fail']
-        liwc_features['liwc_fail'] = nan_value
-        liwc_features['receptiviti_fail'] = nan_value
+        return error_liwc_keys, error_liwc_features
     else:
         for key in response.json()['receptiviti_scores']['raw_scores']:
             skey = 'receptiviti_%s' % key
