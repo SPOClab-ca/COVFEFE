@@ -20,6 +20,7 @@ from utils.lexicosyntactic import transcript
 from utils.lexicosyntactic import yngve
 
 from utils import file_utils
+import config
 
 class Feature(object):
 
@@ -160,7 +161,7 @@ class FeatureExtractor(object):
         if path_to_anew is not None:
             self.norms_anew = functions.get_anew_norms(path_to_anew)
         else: # default
-            self.norms_anew = functions.get_anew_norms()
+            self.norms_anew = None
 
         # Warringer
         if path_to_warringer is not None:
@@ -375,9 +376,13 @@ class FeatureExtractor(object):
             get_pos_ratios = True if list_features is None or 'pos_ratios' in list_features else False
             get_frequency_norms = True if list_features is None or 'freq_norms' in list_features else False
             get_image_norms = True if list_features is None or 'image_norms' in list_features else False
-            get_anew_norms = True if list_features is None or 'anew_norms' in list_features else False
             get_warringer_norms = True if list_features is None or 'warringer_norms' in list_features else False
             get_density = True if list_features is None or 'density' in list_features else False
+
+            if config.path_to_anew:
+                get_anew_norms = True if list_features is None or 'anew_norms' in list_features else False
+            else:
+                get_anew_norms = False
 
             pos_keys, pos_features = lexical_features.get_pos_features(pos_utterances, total_words, self.lemmatizer,
                                                                        self.norms_freq, self.norms_image, self.norms_anew, self.norms_warringer,

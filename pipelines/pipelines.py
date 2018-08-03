@@ -5,10 +5,21 @@ from nodes import helper, audio, lexicosyntactic
 from utils.segment_mappers import TxtSegments, EafSegments
 
 @pipeline_registry
-def split_speech(in_folder, out_folder, num_threads):
+def split_speech_eaf(in_folder, out_folder, num_threads):
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
 
     splitter = EafSegments(in_folder)
+    split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
+
+    p = Pipeline(file_finder | split, n_threads=num_threads, quiet=True)
+
+    return p
+
+@pipeline_registry
+def split_speech_txt(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
+
+    splitter = TxtSegments(in_folder)
     split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
 
     p = Pipeline(file_finder | split, n_threads=num_threads, quiet=True)
@@ -41,8 +52,6 @@ def matlab(in_folder, out_folder, num_threads):
 
 @pipeline_registry
 def lex(in_folder, out_folder, num_threads):
-    from nodes import matlab as mtlb
-
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".txt")
 
     feats = lexicosyntactic.Lexicosyntactic("lexicosyntactic", out_dir=out_folder, cfg_file="default.conf")
