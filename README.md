@@ -117,6 +117,9 @@ If you would like to make your custom pipelines and nodes available for others t
 ## Optional dependencies
 
 ##### Matlab
+Lexicosyntactic features from [receptiviti](https://www.receptiviti.ai/) can also be added to the output. Simply copy `secrets.py.example`, rename it to `secrets.py` and fill in your api key. 
+
+##### Matlab
 If you have matlab installed on your system, you can install the MATLAB Engine API. As long as your matlab script 
 takes as input a path the the input file and a path specifying where to save the output, you should be able to create
 a pipeline that uses the `nodes.matlab.MatlabRunner` to call your matlab script.
