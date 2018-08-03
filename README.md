@@ -116,8 +116,8 @@ If you would like to make your custom pipelines and nodes available for others t
 
 ## Optional dependencies
 
-##### Receptiviti
-Lexicosyntactic features from [receptiviti](https://www.receptiviti.ai/) can also be added to the output. Simply copy `secrets.py.example`, rename it to `secrets.py` and fill in your api key. 
+##### Receptiviti LIWC
+LIWC2015 features from [receptiviti](https://www.receptiviti.ai/liwc-api-get-started) can also be added to the output. Simply copy `secrets.py.example`, rename it to `secrets.py` and fill in your api key. 
 
 ##### Matlab
 If you have matlab installed on your system, you can install the MATLAB Engine API. As long as your matlab script 
