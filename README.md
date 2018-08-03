@@ -97,7 +97,7 @@ source env.sh
     </tr>
     <tr>
         <td>main</td>
-        <td>.eav, .eaf</td>
+        <td>.wav, .eaf</td>
         <td>Computers IS10 (both low level descripors and full file summaries) for each wav file in the input. If the 
         file has an associated .eaf file, it will split all annotations into individual files and compute IS10 feautures 
         on the isolated .wav files</td>
