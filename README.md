@@ -116,7 +116,7 @@ If you would like to make your custom pipelines and nodes available for others t
 
 ## Optional dependencies
 
-##### Matlab
+##### Receptiviti
 Lexicosyntactic features from [receptiviti](https://www.receptiviti.ai/) can also be added to the output. Simply copy `secrets.py.example`, rename it to `secrets.py` and fill in your api key. 
 
 ##### Matlab
