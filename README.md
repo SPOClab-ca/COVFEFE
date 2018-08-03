@@ -112,6 +112,8 @@ feature vector for each wav file, you could copy the the opensmile_is10_lld pipe
 Any pipelines added to the `pipelines/` folder and decorated with `@pipeline_registry` will be automatically discovered
 and available through the CLI.
 
+If you would like to make your custom pipelines and nodes available for others to use, please feel free to make a pull request.
+
 ## Optional dependencies
 
 ##### Matlab
