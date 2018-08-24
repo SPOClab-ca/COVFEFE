@@ -1,9 +1,11 @@
-from pyPiper import Node
+from pyPiper import Node, Pipeline
 
 import os
 
 from utils import file_utils
 from utils.logger import get_logger
+from utils.tqdmUpdate import TqdmUpdate
+
 
 class FileOutputNode(Node):
     def __init__(self, name, out_dir, **kwargs):
@@ -33,10 +35,19 @@ class FileOutputNode(Node):
 class FindFiles(Node):
     def setup(self, dir, ext="", prefix=""):
         self.files = file_utils.find_files(dir, prefix=prefix, ext=ext)
-        self.stateless = False
+        self.size = len(self.files)
 
     def run(self, data):
         if len(self.files) > 0:
             self.emit(self.files.pop())
         else:
             self.close()
+
+
+class ProgressPipeline(Pipeline):
+    def run(self, update_callback=None, *args, **kwargs):
+        if update_callback is None:
+            with TqdmUpdate(*args, **kwargs) as pbar:
+                super().run(update_callback=pbar.update)
+        else:
+            super().run(update_callback=update_callback)

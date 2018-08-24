@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [ -z "$1" ]
+  then
+    echo "Please provide a path to save dependencies"
+    exit
+fi
+
 DEP_ROOT=$1
 COVFEFE_DIR=$(pwd)
 OUT_FILE=env.sh
@@ -7,7 +13,14 @@ OUT_FILE=env.sh
 mkdir -p "$DEP_ROOT"
 cd "$DEP_ROOT"
 
-read -p "What is the path to the openSMILE source? " opensmile_home
+
+if [ -z "$2" ]
+  then
+    read -p "What is the path to the openSMILE source? " opensmile_home
+else
+    opensmile_home=$2
+fi
+
 if [ ! -d "$opensmile_home" ]
 then
     echo "$opensmile_home does not exist"
@@ -15,15 +28,15 @@ then
 fi
 
 # Stanford pos tagger
-stanford_pos_path=$DEP_ROOT/stanford-postagger-2012-01-06
-if [ ! -d "$stanford_pos_path" ]
+stanford_pos_path=stanford-postagger-2012-01-06
+if [ ! -d $stanford_pos_path ];
 then
     echo "Stanford pos tagger not found. Downloading"
     wget https://nlp.stanford.edu/software/stanford-postagger-2012-01-06.tgz
     tar -xvzf stanford-postagger-2012-01-06.tgz
 fi
 
-stanford_parser_path=$DEP_ROOT/stanford-parser-full-2013-06-20
+stanford_parser_path=stanford-parser-full-2013-06-20
 if [ ! -d "$stanford_parser_path" ]
 then
     echo "Stanford parser not found. Downloading"
@@ -31,7 +44,7 @@ then
     unzip stanford-parser-full-2013-06-20.zip
 fi
 
-lu_analyzer_path=$DEP_ROOT/L2SCA-2016-06-30
+lu_analyzer_path=L2SCA-2016-06-30
 if [ ! -d "$lu_analyzer_path" ]
 then
     echo "LU analyzer not found. Downloading"
@@ -39,7 +52,7 @@ then
     tar -xzf L2SCA-2016-06-30.tgz
 fi
 
-path_to_warringer=$DEP_ROOT/Ratings_Warriner_et_al.csv
+path_to_warringer=Ratings_Warriner_et_al.csv
 if [ ! -f "$path_to_warringer" ]
 then
     echo "Ratings Warringer not found. Downloading"
@@ -47,15 +60,15 @@ then
 fi
 
 
-path_to_mpqa_lexicon=$DEP_ROOT/subjclueslen1-HLTEMNLP05.tff
+path_to_mpqa_lexicon=subjclueslen1-HLTEMNLP05.tff
 if [ ! -f "$path_to_mpqa_lexicon" ]
 then
     echo "Ratings mpqa lexicon not found. Downloading"
     wget https://github.uconn.edu/raw/job13011/BigData/master/subjclueslen1-HLTEMNLP05.tff
 fi
 
-path_to_stanford_cp=$DEP_ROOT/stanford-corenlp-full-2016-10-31
-if [ ! -d "$path_to_stanford_cp" ]
+path_to_stanford_cp=stanford-corenlp-full-2016-10-31
+if [ -d "$path_to_stanford_cp" ]
 then
     echo "Stanford CoreNLP not found. Downloading"
     wget http://nlp.stanford.edu/software/stanford-corenlp-full-2016-10-31.zip
@@ -64,12 +77,12 @@ then
     cp $COVFEFE_DIR/scripts/lexparser_dep.sh stanford-corenlp-full-2016-10-31/
 fi
 
-cfg_rules_path=$DEP_ROOT/top_rules.txt
-path_to_dictionary=$DEP_ROOT/american-english
-path_to_freq_norms=$DEP_ROOT/frequencies.txt
-path_to_image_norms=$DEP_ROOT/image.txt
-path_to_lda_model=$DEP_ROOT/lda_model_wiki
-path_to_lda_wordids=$DEP_ROOT/lda_wordids.txt.bz2
+cfg_rules_path=top_rules.txt
+path_to_dictionary=american-english
+path_to_freq_norms=frequencies.txt
+path_to_image_norms=image.txt
+path_to_lda_model=lda_model_wiki
+path_to_lda_wordids=lda_wordids.txt.bz2
 
 if [ ! -f "$cfg_rules_path" ]
 then
@@ -88,19 +101,19 @@ fi
 
 cd $COVFEFE_DIR
 
-echo "export stanford_pos_path=$stanford_pos_path" > "$OUT_FILE"
-echo "export stanford_parser_path=$stanford_parser_path" >> "$OUT_FILE"
-echo "export lu_analyzer_path=$lu_analyzer_path" >> "$OUT_FILE"
-echo "export path_to_warringer=$path_to_warringer" >> "$OUT_FILE"
-echo "export path_to_mpqa_lexicon=$path_to_mpqa_lexicon" >> "$OUT_FILE"
-echo "export path_to_stanford_cp=$path_to_stanford_cp/" >> "$OUT_FILE"
+echo "export stanford_pos_path=$DEP_ROOT/$stanford_pos_path" > "$OUT_FILE"
+echo "export stanford_parser_path=$DEP_ROOT/$stanford_parser_path" >> "$OUT_FILE"
+echo "export lu_analyzer_path=$DEP_ROOT/$lu_analyzer_path" >> "$OUT_FILE"
+echo "export path_to_warringer=$DEP_ROOT/$path_to_warringer" >> "$OUT_FILE"
+echo "export path_to_mpqa_lexicon=$DEP_ROOT/$path_to_mpqa_lexicon" >> "$OUT_FILE"
+echo "export path_to_stanford_cp=$DEP_ROOT/$path_to_stanford_cp/" >> "$OUT_FILE"
 
-echo "export cfg_rules_path=$cfg_rules_path" >> "$OUT_FILE"
-echo "export path_to_dictionary=$path_to_dictionary" >> "$OUT_FILE"
-echo "export path_to_freq_norms=$path_to_freq_norms" >> "$OUT_FILE"
-echo "export path_to_image_norms=$path_to_image_norms" >> "$OUT_FILE"
-echo "export path_to_lda_model=$path_to_lda_model" >> "$OUT_FILE"
-echo "export path_to_lda_wordids=$path_to_lda_wordids" >> "$OUT_FILE"
+echo "export cfg_rules_path=$DEP_ROOT/$cfg_rules_path" >> "$OUT_FILE"
+echo "export path_to_dictionary=$DEP_ROOT/$path_to_dictionary" >> "$OUT_FILE"
+echo "export path_to_freq_norms=$DEP_ROOT/$path_to_freq_norms" >> "$OUT_FILE"
+echo "export path_to_image_norms=$DEP_ROOT/$path_to_image_norms" >> "$OUT_FILE"
+echo "export path_to_lda_model=$DEP_ROOT/$path_to_lda_model" >> "$OUT_FILE"
+echo "export path_to_lda_wordids=$DEP_ROOT/$path_to_lda_wordids" >> "$OUT_FILE"
 
 echo "export OPENSMILE_HOME=$opensmile_home" >> $OUT_FILE
 

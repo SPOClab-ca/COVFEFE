@@ -1,4 +1,4 @@
-from pyPiper import Pipeline
+from nodes.helper import ProgressPipeline
 
 from pipelines import pipeline_registry
 from nodes import helper, audio, lexicosyntactic
@@ -11,7 +11,7 @@ def split_speech_eaf(in_folder, out_folder, num_threads):
     splitter = EafSegments(in_folder)
     split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
 
-    p = Pipeline(file_finder | split, n_threads=num_threads, quiet=True)
+    p = ProgressPipeline(file_finder | split, n_threads=num_threads, quiet=True)
 
     return p
 
@@ -22,7 +22,7 @@ def split_speech_txt(in_folder, out_folder, num_threads):
     splitter = TxtSegments(in_folder)
     split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
 
-    p = Pipeline(file_finder | split, n_threads=num_threads, quiet=True)
+    p = ProgressPipeline(file_finder | split, n_threads=num_threads, quiet=True)
 
     return p
 
@@ -33,7 +33,7 @@ def opensmile_is10_lld(in_folder, out_folder, num_threads):
     is10 = audio.OpenSmileRunner("is10_lld", out_dir=out_folder, conf_file="IS10_paraling.conf", out_flag="-lldcsvoutput")
 
 
-    p = Pipeline(file_finder | is10, n_threads=num_threads, quiet=True)
+    p = ProgressPipeline(file_finder | is10, n_threads=num_threads, quiet=True)
 
     return p
 
@@ -46,7 +46,7 @@ def matlab(in_folder, out_folder, num_threads):
 
     is10 = mtlb.MatlabRunner("matlab_acoustics", out_dir=out_folder, function="extract_acoustics", out_ext=".txt")
 
-    p = Pipeline(file_finder | is10, n_threads=num_threads, quiet=True)
+    p = ProgressPipeline(file_finder | is10, n_threads=num_threads, quiet=True)
 
     return p
 
@@ -56,6 +56,6 @@ def lex(in_folder, out_folder, num_threads):
 
     feats = lexicosyntactic.Lexicosyntactic("lexicosyntactic", out_dir=out_folder, cfg_file="default.conf")
 
-    p = Pipeline(file_finder | feats, n_threads=num_threads, quiet=True)
+    p = ProgressPipeline(file_finder | feats, n_threads=num_threads, quiet=True)
 
     return p

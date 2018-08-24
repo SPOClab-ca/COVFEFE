@@ -1,4 +1,4 @@
-from pyPiper import Pipeline
+from nodes.helper import ProgressPipeline
 
 from pipelines import pipeline_registry
 from nodes import helper, audio
@@ -24,7 +24,7 @@ def main(in_folder, out_folder, num_threads):
 
 
 
-    p = Pipeline(file_finder | [is10_lld,
+    p = ProgressPipeline(file_finder | [is10_lld,
                                 is10,
                                 split | [is10_lld_per_utterance, is10_per_utterance]
                                 ],
