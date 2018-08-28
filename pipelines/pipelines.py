@@ -9,7 +9,7 @@ def split_speech_eaf(in_folder, out_folder, num_threads):
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
 
     splitter = EafSegments(in_folder)
-    split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
+    split = audio.SplitSegments("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
 
     p = ProgressPipeline(file_finder | split, n_threads=num_threads, quiet=True)
 
@@ -20,7 +20,7 @@ def split_speech_txt(in_folder, out_folder, num_threads):
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
 
     splitter = TxtSegments(in_folder)
-    split = audio.SplitSements("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
+    split = audio.SplitSegments("split_speech", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file)
 
     p = ProgressPipeline(file_finder | split, n_threads=num_threads, quiet=True)
 

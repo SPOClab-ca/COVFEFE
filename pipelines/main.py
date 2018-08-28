@@ -14,7 +14,7 @@ def main(in_folder, out_folder, num_threads):
                                  out_flag="-csvoutput")
 
     splitter = EafSegments(in_folder)
-    split = audio.SplitSements("utterances", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file,
+    split = audio.SplitSegments("utterances", out_dir=out_folder, segment_mapping_fn=splitter.get_segs_for_file,
                                out_streams=["audio", "label"])
 
     is10_lld_per_utterance = audio.OpenSmileRunner("is10_lld_per_utterance", out_dir=out_folder, in_streams="audio",
