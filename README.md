@@ -125,13 +125,13 @@ a pipeline that uses the `nodes.matlab.MatlabRunner` to call your matlab script.
 ##### ANEW
 If you have access to the ANEW2010 dictionary, you can put the ANEW2010All.txt file in path you gave to the setup script
 to add additional features to lexicosyntactic output. You will also need to add
-`export path_to_anew=/path/to/dependencies/ANEW2010All.txt` to `env.sh`.
+`path_to_anew=/path/to/dependencies/ANEW2010All.txt` to `config.ini`.
 
 ##### RST Discourse Treebank
-Similar to ANEW, you can put the RST treebank data in the dependency folder and the following lines to 'env.'
+Similar to ANEW, you can put the RST treebank data in the dependency folder and the following lines to 'config.ini'
 ```bash
-export path_to_rst_python=path/to/deps/RST/rstenv/bin/python
-export path_to_rst=path/to/deps/RST/src/
+path_to_rst_python=path/to/deps/RST/rstenv/bin/python
+path_to_rst=path/to/deps/RST/src/
 ```
 
 
