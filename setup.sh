@@ -8,7 +8,7 @@ fi
 
 DEP_ROOT=$1
 COVFEFE_DIR=$(pwd)
-OUT_FILE=env.sh
+OUT_FILE=config.ini
 
 mkdir -p "$DEP_ROOT"
 cd "$DEP_ROOT"
@@ -44,6 +44,9 @@ then
     unzip stanford-parser-full-2013-06-20.zip
 fi
 
+cp $COVFEFE_DIR/scripts/lexparser_oneline.sh "$stanford_parser_path/"
+cp $COVFEFE_DIR/scripts/lexparser_dep.sh "$stanford_parser_path/"
+
 lu_analyzer_path=L2SCA-2016-06-30
 if [ ! -d "$lu_analyzer_path" ]
 then
@@ -68,14 +71,15 @@ then
 fi
 
 path_to_stanford_cp=stanford-corenlp-full-2016-10-31
-if [ -d "$path_to_stanford_cp" ]
+if [ ! -d "$path_to_stanford_cp" ]
 then
     echo "Stanford CoreNLP not found. Downloading"
     wget http://nlp.stanford.edu/software/stanford-corenlp-full-2016-10-31.zip
     unzip stanford-corenlp-full-2016-10-31.zip
-    cp $COVFEFE_DIR/scripts/lexparser_online.sh stanford-corenlp-full-2016-10-31/
-    cp $COVFEFE_DIR/scripts/lexparser_dep.sh stanford-corenlp-full-2016-10-31/
 fi
+
+cp $COVFEFE_DIR/scripts/lexparser_oneline.sh "$path_to_stanford_cp/"
+cp $COVFEFE_DIR/scripts/lexparser_dep.sh "$path_to_stanford_cp/"
 
 cfg_rules_path=top_rules.txt
 path_to_dictionary=american-english
@@ -101,22 +105,22 @@ fi
 
 cd $COVFEFE_DIR
 
-echo "export stanford_pos_path=$DEP_ROOT/$stanford_pos_path" > "$OUT_FILE"
-echo "export stanford_parser_path=$DEP_ROOT/$stanford_parser_path" >> "$OUT_FILE"
-echo "export lu_analyzer_path=$DEP_ROOT/$lu_analyzer_path" >> "$OUT_FILE"
-echo "export path_to_warringer=$DEP_ROOT/$path_to_warringer" >> "$OUT_FILE"
-echo "export path_to_mpqa_lexicon=$DEP_ROOT/$path_to_mpqa_lexicon" >> "$OUT_FILE"
-echo "export path_to_stanford_cp=$DEP_ROOT/$path_to_stanford_cp/" >> "$OUT_FILE"
+echo "[deps]" > "$OUT_FILE"
+echo "stanford_pos_path=$DEP_ROOT/$stanford_pos_path" >> "$OUT_FILE"
+echo "stanford_parser_path=$DEP_ROOT/$stanford_parser_path" >> "$OUT_FILE"
+echo "lu_analyzer_path=$DEP_ROOT/$lu_analyzer_path" >> "$OUT_FILE"
+echo "path_to_warringer=$DEP_ROOT/$path_to_warringer" >> "$OUT_FILE"
+echo "path_to_mpqa_lexicon=$DEP_ROOT/$path_to_mpqa_lexicon" >> "$OUT_FILE"
+echo "path_to_stanford_cp=$DEP_ROOT/$path_to_stanford_cp/" >> "$OUT_FILE"
 
-echo "export cfg_rules_path=$DEP_ROOT/$cfg_rules_path" >> "$OUT_FILE"
-echo "export path_to_dictionary=$DEP_ROOT/$path_to_dictionary" >> "$OUT_FILE"
-echo "export path_to_freq_norms=$DEP_ROOT/$path_to_freq_norms" >> "$OUT_FILE"
-echo "export path_to_image_norms=$DEP_ROOT/$path_to_image_norms" >> "$OUT_FILE"
-echo "export path_to_lda_model=$DEP_ROOT/$path_to_lda_model" >> "$OUT_FILE"
-echo "export path_to_lda_wordids=$DEP_ROOT/$path_to_lda_wordids" >> "$OUT_FILE"
+echo "cfg_rules_path=$DEP_ROOT/$cfg_rules_path" >> "$OUT_FILE"
+echo "path_to_dictionary=$DEP_ROOT/$path_to_dictionary" >> "$OUT_FILE"
+echo "path_to_freq_norms=$DEP_ROOT/$path_to_freq_norms" >> "$OUT_FILE"
+echo "path_to_image_norms=$DEP_ROOT/$path_to_image_norms" >> "$OUT_FILE"
+echo "path_to_lda_model=$DEP_ROOT/$path_to_lda_model" >> "$OUT_FILE"
+echo "path_to_lda_wordids=$DEP_ROOT/$path_to_lda_wordids" >> "$OUT_FILE"
 
-echo "export OPENSMILE_HOME=$opensmile_home" >> $OUT_FILE
+echo "OPENSMILE_HOME=$opensmile_home" >> $OUT_FILE
 
 echo "Done. All dependencies saved in $DEP_ROOT"
-echo "Environment variables saved in $OUT_FILE"
-echo "Remember to source this file before running covfefe"
+echo "Configuration saved in $OUT_FILE"

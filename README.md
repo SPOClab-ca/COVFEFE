@@ -56,8 +56,11 @@ installed. You can find instructions on the [openSMILE website](https://audeerin
 This script will ask you to enter the path to the openSMILE source. This is the path to the extracted zip or tar file, 
 not the smilExtract binary. 
 
-Next the setup script downloads various dependencies (requires 1.6 GB of disk space) and creates a file containing paths
-to the dependencies. You should source this file whenever you open a new terminal session.
+Next the setup script downloads various dependencies (requires 1.6 GB of disk space) and creates a file called 
+`config.ini` which stores paths to the dependencies. When covfefe is run, it will try to find it's dependencies 
+from environment variables first, then this config file.  
+
+
 ```bash
 source env.sh
 ```
