@@ -138,7 +138,7 @@ class IS10_Paraling_lld(OpenSmileRunner):
         return [self.os_exec, "-C", self.conf_file, "-I", wav_file, "-lldcsvoutput", out_file, "-nologfile", "-noconsoleoutput", "-appendcsv", "0"]
 
 
-class SplitSements(FileOutputNode):
+class SplitSegments(FileOutputNode):
     """
        segment_mapping_fn is a pointer to a function that takes as input a file and sample rate and returns a
        list of all the segments in that file in the format [(start1, end1, segname1), (start2, end2, segname2), ...] where
