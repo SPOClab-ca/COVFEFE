@@ -60,11 +60,6 @@ Next the setup script downloads various dependencies (requires 1.6 GB of disk sp
 `config.ini` which stores paths to the dependencies. When covfefe is run, it will try to find it's dependencies 
 from environment variables first, then this config file.  
 
-
-```bash
-source env.sh
-```
-
 ## Default Pipelines
 <table>
     <tr>
