@@ -43,3 +43,9 @@ path_to_rst = _get_var("path_to_rst", None)
 path_to_stanford_cp = _get_var("path_to_stanford_cp")
 path_to_lda_model = _get_var("path_to_lda_model")
 path_to_lda_wordids = _get_var("path_to_lda_wordids")
+
+
+nltk_data = _get_var("NLTK_DATA", None)
+if nltk_data:
+    import nltk
+    nltk.data.path.append(nltk_data)
