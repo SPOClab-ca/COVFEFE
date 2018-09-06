@@ -6,9 +6,38 @@ where each node is a processing task that sends it's output to the next node in 
 
 Nodes are defined in ```nodes/``` and pipelines in ```pipelines/```.
 
-An example pipeline is ```opensmile_is10_lld``` defined in ```pipelines/pipelines.py```. The function that creates the pipeline 
-is decorated using ```@pipeline_registry``` which adds it to registry containing all pipelines.
+An example pipeline is ```opensmile_is10_lld``` defined in ```pipelines/pipelines.py```. 
 
+```python
+@pipeline_registry
+def opensmile_is10_lld(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
+
+    is10 = audio.OpenSmileRunner("is10_lld", out_dir=out_folder, conf_file="IS10_paraling.conf", out_flag="-lldcsvoutput")
+
+
+    p = ProgressPipeline(file_finder | is10, n_threads=num_threads, quiet=True)
+
+    return p
+```
+
+The function is decorated using ```@pipeline_registry``` which adds it to registry containing all pipelines. When called, a 
+pipeline function will be provided an input folder, output folder and number of threads as parameters. These parameters are 
+used to configure the pipeline. The `opensmile_is10_lld` function shown above first creates a node to find all the files in 
+the input folder that have a `.wav` extension. The second node it creates is an `OpenSmileRunner`, which is defined in the 
+`nodes.audio` package. This node passes its input to openSMILE (https://audeering.com/technology/opensmile/), a feature 
+extraction tool. Some common nodes (such as converting `wav` to `mp3`, resampling audio, calling matlab functions or shell scripts)
+are provided and users can define their own nodes.
+
+After defining the nodes, the `opensmile_is10_lld` function creates a pipeline using the `|` operator. This is inspired by the 
+unix pipe, and simply means that the output of the left node is passed to the right node. The right hand side of the operator 
+can be a list of nodes, in which case the input from the left side is passed to all nodes in the list. 
+
+The way covfefe is set up, each node accepts as input a file path and outputs a file path. Standardizing this makes it easier
+to create new nodes and pipelines that are interoperable.
+
+After creating the pipeline, `p`, the pipeline function returns it. The pipeline so far has only been defined and not executed.
+It will be executed by the main function in `covfefe.py`, which is the script you can use to call different pipelines. 
 To execute a pipeline, simply run
 
 ```bash
