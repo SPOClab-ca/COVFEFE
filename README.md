@@ -7,7 +7,7 @@ COVFEFE is a a tool for feature extraction. Given a folder containing your data,
 file in the input folder. Out of the box, it currently supports audio and text inputs, but is easily extensible (feel free to
 make a pull request if you want to add more). 
 
-As an example, say you had an input folder:
+As an example, say you had an input folder with two audio files and two text files.
 ```
 input_data
 ├── file1.txt
@@ -15,7 +15,7 @@ input_data
 ├── file2.txt
 └── file2.wav
 ```
-And you wanted tot extract acoustic features for all the wav files and lexicosyntactic features for the txt files.
+And you wanted to extract acoustic features for all the wav files and lexicosyntactic features for the txt files.
 You could run
 ```bash
 python covfefe.py -i input_data -o output_folder -p pipeline_name -p opensmile_is10
@@ -24,8 +24,17 @@ to extract acoustic features on all the wav files. And
 ```bash
 python covfefe.py -i input_data -o output_folder -p pipeline_name -p lex
 ```
-to extract lexicosyntactic features on all the txt files.
+to extract lexicosyntactic features on all the txt files. This will create an output folder with all the features.
 
+```
+output_folder
+├── is10
+│   ├── file1.csv
+│   └── file2.csv
+└── lexicosyntactic
+    ├── file1.csv
+    └── file2.csv
+```
 
 
 # Detailed Description
