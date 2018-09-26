@@ -1,6 +1,34 @@
 # COVFEFE
 COre Variable Feature Extraction Feature Extractor
 
+
+# Simple Description
+COVFEFE is a a tool for feature extraction. Given a folder containing your data, it will compute features for each 
+file in the input folder. Out of the box, it currently supports audio and text inputs, but is easily extensible (feel free to
+make a pull request if you want to add more). 
+
+As an example, say you had an input folder:
+```
+input_data
+├── file1.txt
+├── file1.wav
+├── file2.txt
+└── file2.wav
+```
+And you wanted tot extract acoustic features for all the wav files and lexicosyntactic features for the txt files.
+You could run
+```bash
+python covfefe.py -i input_data -o output_folder -p pipeline_name -p opensmile_is10
+```
+to extract acoustic features on all the wav files. And 
+```bash
+python covfefe.py -i input_data -o output_folder -p pipeline_name -p lex
+```
+to extract lexicosyntactic features on all the txt files.
+
+
+
+# Detailed Description
 A fast, multi-threaded tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph 
 where each node is a processing task that sends it's output to the next node in the graph.
 
@@ -106,6 +134,11 @@ from environment variables first, then this config file.
         <td>split_speech_txt</td>
         <td>.wav, .txt</td>
         <td>Same as split_speech_eaf except uses tab separated .txt files as annotations (start \t end \t annotation)</td>
+    </tr>
+    <tr>
+        <td>opensmile_is10</td>
+        <td>.wav</td>
+        <td>Computes openSMILE IS10 features describing an entire wav file for each wav file in the input folder</td>
     </tr>
     <tr>
         <td>opensmile_is10_lld</td>

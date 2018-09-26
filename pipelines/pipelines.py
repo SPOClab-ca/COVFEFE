@@ -39,6 +39,17 @@ def opensmile_is10_lld(in_folder, out_folder, num_threads):
 
 
 @pipeline_registry
+def opensmile_is10(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
+
+    is10 = audio.OpenSmileRunner("is10", out_dir=out_folder, conf_file="IS10_paraling.conf", out_flag="-csvoutput")
+
+
+    p = ProgressPipeline(file_finder | is10, n_threads=num_threads, quiet=True)
+
+    return p
+
+@pipeline_registry
 def matlab(in_folder, out_folder, num_threads):
     from nodes import matlab as mtlb
 
