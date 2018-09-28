@@ -205,6 +205,12 @@ path_to_rst_python=path/to/deps/RST/rstenv/bin/python
 path_to_rst=path/to/deps/RST/src/
 ```
 
+##### Praat Syllable Nuclei Detection
+Add the following line to 'config.ini':
+```bash
+path_to_praat=path/to/deps/praat_barren
+```
+
 
 
 
