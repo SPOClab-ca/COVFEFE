@@ -9,7 +9,6 @@ from utils import file_utils
 from utils import signal_processing as sp
 from utils.shell_run import shell_run
 from config import OPENSMILE_HOME
-from config import path_to_praat
 
 class Mp3ToWav(FileOutputNode):
     def run(self, mp3_file):
@@ -194,7 +193,7 @@ class PraatRunner(FileOutputNode):
         out_file = self.derive_new_file_path(in_file, 'csv')
 
         if file_utils.should_run(in_file, out_file):
-            cmd = [path_to_praat, '--run', 'scripts/syllable_nuclei_v2.praat', in_file]
+            cmd = ['praat', '--run', 'scripts/syllable_nuclei_v2.praat', in_file]
             with open(out_file, 'w') as out_file_handle:
                 res = subprocess.call(cmd, stdout=out_file_handle)
 
