@@ -9,11 +9,12 @@ DEFAULT_NOT_SET = "dasklhglaskjdlkasj"
 
 if os.path.isfile(CONFIG_FILE):
     cfg = configparser.ConfigParser()
+    # Prevent configparser from converting keys to lowercase
+    cfg.optionxform = str
     cfg.read(CONFIG_FILE)
     _from_cfg_file = cfg._sections["deps"]
 
 def _get_var(key, default=DEFAULT_NOT_SET):
-
     try:
         if key in os.environ:
             return os.environ[key]
