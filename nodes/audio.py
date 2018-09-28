@@ -198,9 +198,8 @@ class PraatRunner(FileOutputNode):
         out_file = self.derive_new_file_path(in_file, 'csv')
 
         if file_utils.should_run(in_file, out_file):
-            cmd = ['praat', '--run', 'scripts/syllable_nuclei_v2.praat', in_file]
-            with open(out_file, 'w') as out_file_handle:
-                res = subprocess.call(cmd, stdout=out_file_handle)
+            cmd = ['praat', '--run', 'scripts/syllable_nuclei_v2.praat', os.path.abspath(in_file)]
+            res = shell_run(cmd, stdout=out_file)
 
             if res != 0:
                 self.log(logging.ERROR,"Failed %s -> %s with error code %i. cmd: %s" % (in_file, out_file, res, " ".join(cmd)))

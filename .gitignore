@@ -9,3 +9,4 @@ secrets.py
 env.sh
 
 env-manual.sh
+config.ini
