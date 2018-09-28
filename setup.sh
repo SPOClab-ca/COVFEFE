@@ -45,7 +45,9 @@ then
 fi
 
 cp $COVFEFE_DIR/scripts/lexparser_oneline.sh "$stanford_parser_path/"
+chmod +x "$stanford_parser_path/lexparser_oneline.sh"
 cp $COVFEFE_DIR/scripts/lexparser_dep.sh "$stanford_parser_path/"
+chmod +x "$stanford_parser_path/lexparser_dep.sh"
 
 lu_analyzer_path=L2SCA-2016-06-30
 if [ ! -d "$lu_analyzer_path" ]
