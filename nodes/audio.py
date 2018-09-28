@@ -98,7 +98,12 @@ class OpenSmileRunner(FileOutputNode):
         self.out_flag = out_flag
         self.out_ext = out_ext
 
-        self.opensmile_exec = file_utils.locate_file("SMILExtract", [OPENSMILE_HOME, os.path.join(OPENSMILE_HOME, "bin")], use_path=True)
+        opensmile_locations = [
+            OPENSMILE_HOME,
+            os.path.join(OPENSMILE_HOME, "bin"),
+            os.path.join(OPENSMILE_HOME, "bin/linux_x64_standalone_static"),
+        ]
+        self.opensmile_exec = file_utils.locate_file("SMILExtract", opensmile_locations, use_path=True)
 
 
     def run(self, in_file):
