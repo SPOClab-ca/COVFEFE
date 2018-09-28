@@ -70,3 +70,12 @@ def lex(in_folder, out_folder, num_threads):
     p = ProgressPipeline(file_finder | feats, n_threads=num_threads, quiet=True)
 
     return p
+
+@pipeline_registry
+def praat_syllable_nuclei(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
+
+    praat = audio.PraatRunner("praat_syllable_nuclei", out_dir=out_folder)
+    p = ProgressPipeline(file_finder | praat, n_threads=num_threads, quiet=True)
+
+    return p

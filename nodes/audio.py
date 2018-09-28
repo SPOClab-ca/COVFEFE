@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 import os
 import logging
+import subprocess
 
 from nodes.helper import FileOutputNode
 from utils import file_utils
@@ -188,3 +189,23 @@ class SplitSegments(FileOutputNode):
                     f.write(extra_info)
 
             self.emit([seg_path, extra_path])
+
+
+class PraatRunner(FileOutputNode):
+    def run(self, in_file):
+        self.log(logging.INFO, "Starting %s" % (in_file))
+
+        out_file = self.derive_new_file_path(in_file, 'csv')
+
+        if file_utils.should_run(in_file, out_file):
+            cmd = ['praat', '--run', 'scripts/syllable_nuclei_v2.praat', in_file]
+            with open(out_file, 'w') as out_file_handle:
+                res = subprocess.call(cmd, stdout=out_file_handle)
+
+            if res != 0:
+                self.log(logging.ERROR,"Failed %s -> %s with error code %i. cmd: %s" % (in_file, out_file, res, " ".join(cmd)))
+                return
+
+            self.log(logging.INFO, "Done %s -> %s" % (in_file, out_file))
+
+        self.emit([out_file])

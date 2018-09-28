@@ -155,6 +155,11 @@ from environment variables first, then this config file.
         <td>Computes openSMILE IS10 low level descriptors for each wav file in the input folder</td>
     </tr>
     <tr>
+        <td>praat_syllable_nuclei</td>
+        <td>.wav</td>
+        <td>Runs Praat script that computes syllable nuclei features</td>
+    </tr>
+    <tr>
         <td>matlab</td>
         <td>.wav</td>
         <td>Computes matlab acoustic features for each wav file in the input folder (very slow)</td>
@@ -204,7 +209,6 @@ Similar to ANEW, you can put the RST treebank data in the dependency folder and 
 path_to_rst_python=path/to/deps/RST/rstenv/bin/python
 path_to_rst=path/to/deps/RST/src/
 ```
-
 
 
 
