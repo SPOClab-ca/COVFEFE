@@ -117,7 +117,7 @@ def load_conf(config_file):
         with open(config_file) as f:
             lines = f.readlines()
 
-        if not len(lines) == 4:
+        if len(lines) < 4:
             print('Error with config file. Using default features.')
 
         else:
