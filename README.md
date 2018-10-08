@@ -1,8 +1,15 @@
 # COVFEFE
 COre Variable Feature Extraction Feature Extractor
 
+## Table of Contents
+* [Simple description](#simple-description)
+* [Detailed description](#detailed-description)
+* [Installation instructions](#install)
+* [Available Pipelines](#available-pipelines)
+* [Custom Pipelines](#custom-pipelines)
+* [Optional dependencies](#optional-dependencies)
 
-# Simple Description
+## Simple Description
 COVFEFE is a a tool for feature extraction. Given a folder containing your data, it will compute features for each 
 file in the input folder. Out of the box, it currently supports audio and text inputs, but is easily extensible (feel free to
 make a pull request if you want to add more). 
@@ -37,7 +44,7 @@ output_folder
 ```
 
 
-# Detailed Description
+## Detailed Description
 A fast, multi-threaded tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph 
 where each node is a processing task that sends it's output to the next node in the graph.
 
@@ -126,7 +133,7 @@ Next the setup script downloads various dependencies (requires 1.6 GB of disk sp
 `config.ini` which stores paths to the dependencies. When covfefe is run, it will try to find it's dependencies 
 from environment variables first, then this config file.  
 
-## Default Pipelines
+## Available Pipelines
 <table>
     <tr>
         <th>Pipeline</th>
