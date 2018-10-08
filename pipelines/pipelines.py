@@ -79,3 +79,15 @@ def praat_syllable_nuclei(in_folder, out_folder, num_threads):
     p = ProgressPipeline(file_finder | praat, n_threads=num_threads, quiet=True)
 
     return p
+
+
+@pipeline_registry
+def kaldi_asr(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
+    resample = audio.ResampleWav("resampled_audio", out_dir=out_folder, new_sr=8000)
+    asr = audio.KaldiASR("kaldi_asr", out_dir=out_folder)
+
+
+    p = ProgressPipeline(file_finder | resample | asr, n_threads=num_threads, quiet=True)
+
+    return p

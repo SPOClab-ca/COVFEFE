@@ -32,7 +32,7 @@ class TxtSegments(object):
 
             res = get_txt_segs(seg_file, sample_rate, base_name, self.add_labels, self.sep, self.ts_units)
         else:
-            get_logger().log(logging.WARNING, "No seg file found for % in %s" % (audio_file, self.root_dir))
+            get_logger().log(logging.WARNING, "No seg file found for %s in %s" % (audio_file, self.root_dir))
 
         return res
 
@@ -63,7 +63,7 @@ class EafSegments(object):
             res = get_eaf_segs(seg_file, sample_rate, base_name, self.add_labels)
 
         else:
-            get_logger().log(logging.WARNING, "No seg file found for % in %s" % (audio_file, self.root_dir))
+            get_logger().log(logging.WARNING, "No seg file found for %s in %s" % (audio_file, self.root_dir))
 
         return res
 

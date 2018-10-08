@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+import re
 import os
 import logging
 import subprocess
@@ -8,7 +9,7 @@ from nodes.helper import FileOutputNode
 from utils import file_utils
 from utils import signal_processing as sp
 from utils.shell_run import shell_run
-from config import OPENSMILE_HOME
+from config import OPENSMILE_HOME, KALDI_HOME
 
 class Mp3ToWav(FileOutputNode):
     def run(self, mp3_file):
@@ -206,5 +207,67 @@ class PraatRunner(FileOutputNode):
                 return
 
             self.log(logging.INFO, "Done %s -> %s" % (in_file, out_file))
+
+        self.emit([out_file])
+
+
+class KaldiASR(FileOutputNode):
+    def setup(self, frame_subsampling_factor=3, max_active=7000, beam=15.0, lattice_beam=6.0, acoustic_scale=1.0, **kwargs):
+        self.regex = re.compile(r"^utterance-id1 (.*)$", re.MULTILINE)
+        self.error_regex = re.compile("^ERROR (.*)$", re.MULTILINE)
+
+        cmd_args = {
+            "kaldi_home": KALDI_HOME,
+            "frame-subsampling-factor": frame_subsampling_factor,
+            "max-active": max_active,
+            "beam": beam,
+            "lattice-beam": lattice_beam,
+            "acoustic_scale": acoustic_scale
+        }
+
+        self.cmd = """{kaldi_home}/src/online2bin/online2-wav-nnet3-latgen-faster \
+                    --online=false \
+                    --do-endpointing=false \
+                    --frame-subsampling-factor=3 \
+                    --config={kaldi_home}/egs/aspire/s5/exp/tdnn_7b_chain_online/conf/online.conf \
+                    --max-active=7000 \
+                    --beam=15.0 \
+                    --lattice-beam=6.0 \
+                    --acoustic-scale=1.0 \
+                    --word-symbol-table={kaldi_home}/egs/aspire/s5/exp/tdnn_7b_chain_online/graph_pp/words.txt \
+                    {kaldi_home}/egs/aspire/s5/exp/tdnn_7b_chain_online/final.mdl \
+                    {kaldi_home}/egs/aspire/s5/exp/tdnn_7b_chain_online/graph_pp/HCLG.fst \
+                    'ark:echo utterance-id1 utterance-id1|' \
+                    'scp:echo utterance-id1 **in_placeholder** |' \
+                    'ark:/dev/null'""".format(**cmd_args)
+        self.cmd = re.sub(' +',' ', self.cmd)
+
+
+    def run(self, in_file):
+        self.log(logging.INFO, "Starting %s" % (in_file))
+
+        out_file = self.derive_new_file_path(in_file, 'txt')
+
+        if file_utils.should_run(in_file, out_file):
+            cmd = self.cmd.replace("**in_placeholder**", os.path.abspath(in_file))
+
+            process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = process.communicate()
+            res = process.returncode
+
+
+            if res == 0:
+                hyp = self.regex.search(str(err).replace("\\n", "\n")).group(1)
+
+                with open(out_file, "w") as f:
+                    f.write(hyp)
+
+                self.log(logging.INFO, "Done %s -> %s" % (in_file, out_file))
+            else:
+                error_lines = self.error_regex.findall(str(err).replace("\\n", "\n"))
+                self.log(logging.ERROR,
+                         "Failed %s -> %s with error code %i. cmd: %s. Error message: %s" % (
+                         in_file, out_file, res, cmd, "\n\t".join(error_lines)))
+                return
 
         self.emit([out_file])

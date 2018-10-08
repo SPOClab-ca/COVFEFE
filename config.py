@@ -27,6 +27,7 @@ def _get_var(key, default=DEFAULT_NOT_SET):
             return default
 
 OPENSMILE_HOME = _get_var("OPENSMILE_HOME")
+KALDI_HOME = _get_var("KALDI_HOME")
 
 # Paths to external libraries and relevant files for lexicosyntactic features
 stanford_pos_path = _get_var("stanford_pos_path")
