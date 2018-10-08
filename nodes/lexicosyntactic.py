@@ -12,14 +12,23 @@ import config
 class Lexicosyntactic(FileOutputNode):
     # TODO: Figure out and support filler_dir
     def setup(self, cfg_file, utterance_sep=" . ", filler_dir=None):
+        self.inited = False
+        self.filler_dir = filler_dir
+        self.cfg_file = cfg_file
+        self.utterance_sep = utterance_sep
+
+
+    def do_init(self):
         path_output_parses = os.path.join(self.out_dir, "stanford_parses")
         path_output_lu_parses = os.path.join(self.out_dir, "lu_parses")
         path_output_rst = os.path.join(self.out_dir, "rst_output")
-        self.output_csv = os.path.join(self.out_dir, 'textfeatures%s.csv' % (datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")))
+        self.output_csv = os.path.join(self.out_dir, 'textfeatures%s.csv' % (
+            datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")))
 
         do_wnic = True
 
-        lexical_list, do_lexical, pragmatic_list, do_pragmatic, semantic_list, do_semantic, syntactic_list, do_syntactic = load_conf(cfg_file)
+        lexical_list, do_lexical, pragmatic_list, do_pragmatic, semantic_list, do_semantic, syntactic_list, do_syntactic = load_conf(
+            self.cfg_file)
 
         parser_path = config.stanford_parser_path
         pos_tagger_path = config.stanford_pos_path
@@ -37,42 +46,40 @@ class Lexicosyntactic(FileOutputNode):
         path_to_lda_model = config.path_to_lda_model
         path_to_lda_wordids = config.path_to_lda_wordids
 
-        self.filler_dir = filler_dir
         self.pos_tagger_path = pos_tagger_path
 
         self.feature_extractor = feature.FeatureExtractor(
-                                                    utterance_sep=utterance_sep,
-                                                    path_output_lu_parses=path_output_lu_parses,
-                                                    path_output_parses=path_output_parses,
-                                                    parser_path=parser_path,
-                                                    cfg_rules_path=cfg_rules_path,
-                                                    pos_tagger_path=pos_tagger_path,
-                                                    path_to_dictionary=path_to_dictionary,
-                                                    lu_analyzer_path=lu_analyzer_path,
-                                                    path_to_freq_norms=path_to_freq_norms,
-                                                    path_to_image_norms=path_to_image_norms,
-                                                    path_to_anew=path_to_anew,
-                                                    path_to_warringer=path_to_warringer,
-                                                    do_wnic=do_wnic,
-                                                    path_to_mpqa_lexicon=path_to_mpqa_lexicon,
-                                                    path_to_rst_python=path_to_rst_python,
-                                                    path_to_rst=path_to_rst,
-                                                    path_output_rst=path_output_rst,
-                                                    path_to_stanford_cp=path_to_stanford_cp,
-                                                    path_to_lda_model=path_to_lda_model,
-                                                    path_to_lda_wordids=path_to_lda_wordids,
-                                                    do_lexical = do_lexical,
-                                                    do_syntactic = do_syntactic,
-                                                    do_semantic = do_semantic,
-                                                    do_pragmatic = do_pragmatic,
-                                                    lexical_list = lexical_list,
-                                                    syntactic_list = syntactic_list,
-                                                    semantic_list = semantic_list,
-                                                    pragmatic_list = pragmatic_list
+            utterance_sep=self.utterance_sep,
+            path_output_lu_parses=path_output_lu_parses,
+            path_output_parses=path_output_parses,
+            parser_path=parser_path,
+            cfg_rules_path=cfg_rules_path,
+            pos_tagger_path=pos_tagger_path,
+            path_to_dictionary=path_to_dictionary,
+            lu_analyzer_path=lu_analyzer_path,
+            path_to_freq_norms=path_to_freq_norms,
+            path_to_image_norms=path_to_image_norms,
+            path_to_anew=path_to_anew,
+            path_to_warringer=path_to_warringer,
+            do_wnic=do_wnic,
+            path_to_mpqa_lexicon=path_to_mpqa_lexicon,
+            path_to_rst_python=path_to_rst_python,
+            path_to_rst=path_to_rst,
+            path_output_rst=path_output_rst,
+            path_to_stanford_cp=path_to_stanford_cp,
+            path_to_lda_model=path_to_lda_model,
+            path_to_lda_wordids=path_to_lda_wordids,
+            do_lexical=do_lexical,
+            do_syntactic=do_syntactic,
+            do_semantic=do_semantic,
+            do_pragmatic=do_pragmatic,
+            lexical_list=lexical_list,
+            syntactic_list=syntactic_list,
+            semantic_list=semantic_list,
+            pragmatic_list=pragmatic_list
         )
 
         self.filler_files = {os.path.basename(file_utils.strip_ext(x)): x for x in os.listdir(self.filler_dir)}
-
 
     def run(self, filepath):
         self.log(logging.INFO, "Starting %s" % (filepath))
@@ -80,6 +87,9 @@ class Lexicosyntactic(FileOutputNode):
         out_file = self.derive_new_file_path(filepath, ".csv")
 
         if file_utils.should_run(filepath, out_file):
+            if not self.inited:
+                self.do_init()
+                self.inited = True
 
             t = transcript.PlaintextTranscript(filepath=filepath, label=None, pos_tagger_path=self.pos_tagger_path)
 
