@@ -132,42 +132,56 @@ from environment variables first, then this config file.
         <th>Pipeline</th>
         <th>Input data</th>
         <th>Description</th>
+        <th>Requirements</th>
     </tr>
     <tr>
         <td>split_speech_eaf</td>
         <td>.wav, .eaf</td>
         <td>Reads in wav files and eaf files (with same name except for extension) from input folder and 
         splits each annotated segment into its own wav file</td>
+        <td></td>
     </tr>
     <tr>
         <td>split_speech_txt</td>
         <td>.wav, .txt</td>
         <td>Same as split_speech_eaf except uses tab separated .txt files as annotations (start \t end \t annotation)</td>
+        <td></td>
     </tr>
     <tr>
         <td>opensmile_is10</td>
         <td>.wav</td>
         <td>Computes openSMILE IS10 features describing an entire wav file for each wav file in the input folder</td>
+        <td>openSMILE is installed and OPENSMILE_HOME is set in `config.ini`</td>
     </tr>
     <tr>
         <td>opensmile_is10_lld</td>
         <td>.wav</td>
         <td>Computes openSMILE IS10 low level descriptors for each wav file in the input folder</td>
+        <td>openSMILE is installed and OPENSMILE_HOME is set in `config.ini`</td>
     </tr>
     <tr>
         <td>praat_syllable_nuclei</td>
         <td>.wav</td>
         <td>Runs Praat script that computes syllable nuclei features</td>
+        <td>praat is installed</td>
     </tr>
     <tr>
         <td>matlab</td>
         <td>.wav</td>
         <td>Computes matlab acoustic features for each wav file in the input folder (very slow)</td>
+        <td>Matlab engine for python is installed</td>
     </tr>
     <tr>
         <td>lex</td>
         <td>.txt</td>
         <td>Computes lexicosyntactic features for each txt file in the input</td>
+        <td>All dependencies were downloaded using the `setup.sh` script `config.ini` was correctly generated</td>
+    </tr>
+    <tr>
+        <td>kaldi_asr</td>
+        <td>.wav</td>
+        <td>Runs automatic speech recognition on all wav files using kaldi. Wav files will be reasmpled to 8KHz.</td>
+        <td>Kaldi is installed and compiled and the `aspire` example is setup.</td>
     </tr>
     <tr>
         <td>main</td>
@@ -175,6 +189,7 @@ from environment variables first, then this config file.
         <td>Computers IS10 (both low level descripors and full file summaries) for each wav file in the input. If the 
         file has an associated .eaf file, it will split all annotations into individual files and compute IS10 feautures 
         on the isolated .wav files</td>
+        <td>opensmile + lex + kaldi</td>
     </tr>
 </table>
  
