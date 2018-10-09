@@ -8,6 +8,8 @@ from utils.lexicosyntactic import feature
 from utils.lexicosyntactic import transcript
 
 import config
+from utils.logger import get_logger
+
 
 class Lexicosyntactic(FileOutputNode):
     # TODO: Figure out and support filler_dir
@@ -91,17 +93,21 @@ class Lexicosyntactic(FileOutputNode):
                 self.do_init()
                 self.inited = True
 
-            t = transcript.PlaintextTranscript(filepath=filepath, label=None, pos_tagger_path=self.pos_tagger_path)
 
-            transcript_utterances_fillers = None
-            if self.filler_dir:
-                file_id = os.path.basename(file_utils.strip_ext(filepath))
-                if file_id in self.filler_files:
-                    filler_file = os.path.join(self.filler_dir, self.filler_files[file_id])
-                    filler_transcript = transcript.PlaintextTranscript(filepath=filler_file, label=None, pos_tagger_path=self.pos_tagger_path)
-                    transcript_utterances_fillers = filler_transcript.tokens
+            try:
+                t = transcript.PlaintextTranscript(filepath=filepath, label=None, pos_tagger_path=self.pos_tagger_path)
 
-            self.feature_extractor.extract(t, out_csv=out_file, transcript_utterances_fillers=transcript_utterances_fillers)
+                transcript_utterances_fillers = None
+                if self.filler_dir:
+                    file_id = os.path.basename(file_utils.strip_ext(filepath))
+                    if file_id in self.filler_files:
+                        filler_file = os.path.join(self.filler_dir, self.filler_files[file_id])
+                        filler_transcript = transcript.PlaintextTranscript(filepath=filler_file, label=None, pos_tagger_path=self.pos_tagger_path)
+                        transcript_utterances_fillers = filler_transcript.tokens
+
+                self.feature_extractor.extract(t, out_csv=out_file, transcript_utterances_fillers=transcript_utterances_fillers)
+            except Exception as e:
+                self.log(logging.ERROR, "Failed with error %s" % e)
 
             self.log(logging.INFO, "Done %s -> %s" % (filepath, out_file))
 
@@ -128,7 +134,7 @@ def load_conf(config_file):
             lines = f.readlines()
 
         if len(lines) < 4:
-            print('Error with config file. Using default features.')
+            get_logger().log(logging.ERROR, 'Error with config file. Using default features.')
 
         else:
             lexical_features = lines[0].split('#')[0].split(',')

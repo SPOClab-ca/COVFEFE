@@ -2,6 +2,7 @@
 
 import collections
 import logging
+import os
 import re
 import sys
 import math
@@ -474,10 +475,10 @@ def get_stanford_sentiment_features(transcript_utterances, path_to_stanford_cp, 
     try:
         for utt in transcript_utterances:
             sentence = ' '.join(utt)
-            cmd = 'java -cp "%s" -mx5g edu.stanford.nlp.sentiment.SentimentPipeline -output PROBABILITIES -stdin' % path_to_stanford_cp
-            #print cmd
+            cmd = 'java -cp "%s*" -mx5g edu.stanford.nlp.sentiment.SentimentPipeline -output PROBABILITIES -stdin' % path_to_stanford_cp
+            null = open(os.devnull, "w")
             proc = subprocess.Popen(cmd,
-                                    stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=True)
+                                    stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=null, shell=True)
             proc.stdin.write(sentence.encode())
             proc.stdin.close()
             result = proc.stdout.read().decode()

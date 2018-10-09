@@ -30,7 +30,7 @@ def get_lu_complexity_features(lu_analyzer_path, transcript_filepath, transcript
     # and a CFG parse of the text.
     subprocess.call(['python2', 'analyzeText.py',
                      os.path.abspath(transcript_filepath), os.path.abspath(os.path.join(output_lu_parse_dir, transcript_filename))],
-                    cwd=lu_analyzer_path)
+                    cwd=lu_analyzer_path, stdout=open(os.devnull, "w"), stderr=open(os.devnull, "w"))
 
     # Read the features into the dictionary.
     with open(os.path.join(output_lu_parse_dir, transcript_filename), 'r') as fin_lu:
