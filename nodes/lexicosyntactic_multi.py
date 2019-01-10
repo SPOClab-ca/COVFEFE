@@ -188,10 +188,10 @@ class MultilangTranscript(object):
             self.write_features(self.out_file, debug=False)
 
 
-class MultilingualLex(FileOutputNode):
+class ChineseLex(FileOutputNode):
     def setup(self):
         self.output_parse_dir = os.path.join(self.out_dir, "stanford_parses")
-        with open('/h/bai/research/bai-alzheimer/naacl19/top_chinese_cfg.txt') as cfgf:
+        with open(config.chinese_cfg_rules_path) as cfgf:
             self.cfg_rules = list(map(lambda x: x[:-1], cfgf.readlines()))
 
     def run(self, filepath):
