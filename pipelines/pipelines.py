@@ -71,6 +71,18 @@ def lex(in_folder, out_folder, num_threads):
 
     return p
 
+
+@pipeline_registry
+def multilingual_lex(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".txt")
+
+    feats = lexicosyntactic_multi.MultilingualLex("multilingual_lex", out_dir=out_folder)
+
+    p = ProgressPipeline(file_finder | feats, n_threads=num_threads, quiet=True, exec_name="ParallelExecutor2")
+
+    return p
+
+
 @pipeline_registry
 def praat_syllable_nuclei(in_folder, out_folder, num_threads):
     file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".wav")
