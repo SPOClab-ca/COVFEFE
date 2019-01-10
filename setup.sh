@@ -84,6 +84,7 @@ cp $COVFEFE_DIR/scripts/lexparser_oneline.sh "$path_to_stanford_cp/"
 cp $COVFEFE_DIR/scripts/lexparser_dep.sh "$path_to_stanford_cp/"
 
 cfg_rules_path=top_rules.txt
+chinese_cfg_rules_path=top_chinese_cfg.txt
 path_to_dictionary=american-english
 path_to_freq_norms=frequencies.txt
 path_to_image_norms=image.txt
@@ -94,6 +95,8 @@ if [ ! -f "$cfg_rules_path" ]
 then
     echo "Downloading remaining files"
     wget www.cs.toronto.edu/~complingweb/tools/top_rules.txt
+    # TODO: upload this
+    # wget www.cs.toronto.edu/~complingweb/tools/top_chinese_cfg.txt
     wget www.cs.toronto.edu/~complingweb/tools/american-english
     wget www.cs.toronto.edu/~complingweb/tools/frequencies.txt
     wget www.cs.toronto.edu/~complingweb/tools/image.txt
@@ -116,6 +119,7 @@ echo "path_to_mpqa_lexicon=$DEP_ROOT/$path_to_mpqa_lexicon" >> "$OUT_FILE"
 echo "path_to_stanford_cp=$DEP_ROOT/$path_to_stanford_cp/" >> "$OUT_FILE"
 
 echo "cfg_rules_path=$DEP_ROOT/$cfg_rules_path" >> "$OUT_FILE"
+echo "chinese_cfg_rules_path=$DEP_ROOT/$chinese_cfg_rules_path" >> "$OUT_FILE"
 echo "path_to_dictionary=$DEP_ROOT/$path_to_dictionary" >> "$OUT_FILE"
 echo "path_to_freq_norms=$DEP_ROOT/$path_to_freq_norms" >> "$OUT_FILE"
 echo "path_to_image_norms=$DEP_ROOT/$path_to_image_norms" >> "$OUT_FILE"

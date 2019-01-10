@@ -1,7 +1,7 @@
 from nodes.helper import ProgressPipeline
 
 from pipelines import pipeline_registry
-from nodes import helper, audio, lexicosyntactic
+from nodes import helper, audio, lexicosyntactic, lexicosyntactic_multi
 from utils.segment_mappers import TxtSegments, EafSegments
 
 @pipeline_registry
@@ -70,6 +70,18 @@ def lex(in_folder, out_folder, num_threads):
     p = ProgressPipeline(file_finder | feats, n_threads=num_threads, quiet=True)
 
     return p
+
+
+@pipeline_registry
+def lex_chinese(in_folder, out_folder, num_threads):
+    file_finder = helper.FindFiles("file_finder", dir=in_folder, ext=".txt")
+
+    feats = lexicosyntactic_multi.ChineseLex("lex_chinese", out_dir=out_folder)
+
+    p = ProgressPipeline(file_finder | feats, n_threads=num_threads, quiet=True, exec_name="ParallelExecutor2")
+
+    return p
+
 
 @pipeline_registry
 def praat_syllable_nuclei(in_folder, out_folder, num_threads):
