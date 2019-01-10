@@ -95,8 +95,7 @@ if [ ! -f "$cfg_rules_path" ]
 then
     echo "Downloading remaining files"
     wget www.cs.toronto.edu/~complingweb/tools/top_rules.txt
-    # TODO: upload this
-    # wget www.cs.toronto.edu/~complingweb/tools/top_chinese_cfg.txt
+    wget www.cs.toronto.edu/~complingweb/tools/top_chinese_cfg.txt
     wget www.cs.toronto.edu/~complingweb/tools/american-english
     wget www.cs.toronto.edu/~complingweb/tools/frequencies.txt
     wget www.cs.toronto.edu/~complingweb/tools/image.txt

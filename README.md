@@ -185,6 +185,12 @@ from environment variables first, then this config file.
         <td>All dependencies were downloaded using the `setup.sh` script `config.ini` was correctly generated</td>
     </tr>
     <tr>
+        <td>lex_chinese</td>
+        <td>.txt</td>
+        <td>Computes lexicosyntactic features for Chinese text files</td>
+        <td>Same as the lex pipeline</td>
+    </tr>
+    <tr>
         <td>kaldi_asr</td>
         <td>.wav</td>
         <td>Runs automatic speech recognition on all wav files using kaldi. Wav files will be reasmpled to 8KHz.</td>
