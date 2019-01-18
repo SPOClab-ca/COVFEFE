@@ -10,11 +10,12 @@ COre Variable Feature Extraction Feature Extractor
 * [Optional dependencies](#optional-dependencies)
 
 ## Simple Description
-COVFEFE is a a tool for feature extraction. Given a folder containing your data, it will compute features for each 
-file in the input folder. Out of the box, it currently supports audio and text inputs, but is easily extensible (feel free to
-make a pull request if you want to add more). 
+COVFEFE is a tool for feature extraction.  
+Given a folder containing your data, it will compute features for each 
+file in the input folder. It currently supports acoustic features on audio data and lexical, syntactic and pragmatic features on text data (english and chinese), but can be extended to other features and data types (feel free to
+make a pull request if you would like to add more). 
 
-As an example, say you had an input folder with two audio files and two text files.
+As an example, given an input folder with two audio files and two text files.
 ```
 input_data
 ├── file1.txt
@@ -22,16 +23,15 @@ input_data
 ├── file2.txt
 └── file2.wav
 ```
-And you wanted to extract acoustic features for all the wav files and lexicosyntactic features for the txt files.
-You could run
+To extract acoustic features for all the wav files:
 ```bash
-python covfefe.py -i input_data -o output_folder -p pipeline_name -p opensmile_is10
+python covfefe.py -i input_data -o output_folder -p opensmile_is10
 ```
-to extract acoustic features on all the wav files. And 
+To extract lexicosyntactic features on all the txt files:
 ```bash
-python covfefe.py -i input_data -o output_folder -p pipeline_name -p lex
+python covfefe.py -i input_data -o output_folder -p lex
 ```
-to extract lexicosyntactic features on all the txt files. This will create an output folder with all the features.
+This will create an output folder with all the features:
 
 ```
 output_folder
@@ -45,7 +45,7 @@ output_folder
 
 
 ## Detailed Description
-A fast, multi-threaded tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph 
+COVFEFE is a a fast, multi-threaded tool for running various feature extraction pipelines. A pipeline is a directed acyclic graph 
 where each node is a processing task that sends it's output to the next node in the graph.
 
 Nodes are defined in ```nodes/``` and pipelines in ```pipelines/```.
