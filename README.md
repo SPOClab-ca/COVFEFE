@@ -8,7 +8,7 @@ COre Variable Feature Extraction Feature Extractor
 * [Available Pipelines](#available-pipelines)
 * [Custom Pipelines](#custom-pipelines)
 * [Optional dependencies](#optional-dependencies)
-* [Citation] (#citation)
+* [Citation](#citation)
 
 ## Simple Description
 COVFEFE is a tool for feature extraction.  
