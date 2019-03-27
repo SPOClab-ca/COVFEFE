@@ -8,6 +8,7 @@ COre Variable Feature Extraction Feature Extractor
 * [Available Pipelines](#available-pipelines)
 * [Custom Pipelines](#custom-pipelines)
 * [Optional dependencies](#optional-dependencies)
+* [Citation] (#citation)
 
 ## Simple Description
 COVFEFE is a tool for feature extraction.  
@@ -239,5 +240,7 @@ path_to_rst=path/to/deps/RST/src/
 ```
 
 
+## Citation
+Komeili M, Pou-Prom C, Liaqat D, Fraser KC, Yancheva M, Rudzicz F (2019) Talk2Me: Automated linguistic data collection for personal assessment. PLoS ONE 14(3): e0212342. https://doi.org/10.1371/journal.pone.0212342
 
 
