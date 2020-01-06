@@ -118,7 +118,7 @@ pip install -r requirements.txt
 
 Install nltk packages, if not already installed
 ```bash
-python -c "import nltk; deps=['cmudict', 'wordnet_id', 'punkt', 'wordnet']; [nltk.download(d) for d in deps];"
+python -c "import nltk; deps=['cmudict', 'wordnet_ic', 'punkt', 'wordnet']; [nltk.download(d) for d in deps];"
 ```
 
 
