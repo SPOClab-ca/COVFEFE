@@ -5,8 +5,12 @@
 
 test_data
 
-secrets.py
+api_keys.py
 env.sh
 
 env-manual.sh
 config.ini
+__pycache__/
+.DS_Store
+.venv*/
+*.egg-info/

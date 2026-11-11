@@ -405,12 +405,14 @@ def get_liwc_features(transcript_utterances, nan_value):
     liwc_features = {};
 
     try:
-        import secrets
-        api_key = secrets.receptiviti_api_key
-        api_secret = secrets.receptiviti_api_secret
-        iPerson = secrets.receptiviti_iPerson
-    except:
-        get_logger().log(logging.ERROR, "Unable to import secrets for receptiviti")
+        # Named api_keys (not "secrets") so it does not shadow the stdlib `secrets` module,
+        # which numpy >= 1.17 imports at startup.
+        import api_keys
+        api_key = api_keys.receptiviti_api_key
+        api_secret = api_keys.receptiviti_api_secret
+        iPerson = api_keys.receptiviti_iPerson
+    except (ImportError, AttributeError):
+        get_logger().log(logging.ERROR, "Unable to import api_keys.py for receptiviti (copy api_keys.py.example)")
 
         return error_liwc_keys, error_liwc_features
 
@@ -486,7 +488,7 @@ def get_stanford_sentiment_features(transcript_utterances, path_to_stanford_cp, 
             line = re.split(r'\s+', lines[1].rstrip('\t'))
             sentiments = np.vstack((sentiments, np.array(line[2:]))) if len(sentiments) > 0 else np.array(line[2:])
         sentiments = np.reshape(sentiments, (-1, 5))
-        sentiments = sentiments.astype(np.float)
+        sentiments = sentiments.astype(float)
         if sentiments.shape[0] > 1:
             msentiments = np.mean(sentiments, axis=0)
             ssentiments = np.std(sentiments, axis=0)
@@ -507,8 +509,8 @@ def get_stanford_sentiment_features(transcript_utterances, path_to_stanford_cp, 
 
     except (NameError,) as e:
         msg = 'Cannot run Stanford sentiment analysis, using %s' % path_to_stanford_cp
-        msg = msg + "\n" + re.findall("name '(\w+)' is not defined " + str(e))[0]
-        msg = msg + "\n" + "Error > " + sys.exc_info()[0]
+        msg = msg + "\n" + str(e)
+        msg = msg + "\n" + "Error > " + str(sys.exc_info()[0])
 
         get_logger().log(logging.ERROR, msg)
 

@@ -99,11 +99,11 @@ python covfefe.py -i path/to/in/folder -o /path/to/put/out/files -p pipeline_nam
 Running ```python covfefe.py --help``` will print help options and give a list of available pipelines to run.
 
 ## Install
-First download covfefe and setup a virtual environment:
+COVFEFE requires Python 3.10 to 3.13. First download covfefe and set up a virtual environment:
 ```bash
 git clone https://github.com/SPOClab-ca/COVFEFE.git
 cd COVFEFE
-virtualenv -p python3 .venv
+python3 -m venv .venv
 ```
 
 Activate the virtual environment
@@ -111,15 +111,22 @@ Activate the virtual environment
 source .venv/bin/activate
 ```
 
-Install python libraries:
+Install python libraries. `requirements.txt` is a fully pinned lock file generated from `pyproject.toml`:
 ```bash
 pip install -r requirements.txt
 ```
 
-Install nltk packages, if not already installed
+Alternatively, if you use [uv](https://docs.astral.sh/uv/), the two steps above can be replaced with:
 ```bash
-python -c "import nltk; deps=['cmudict', 'wordnet_ic', 'punkt', 'wordnet']; [nltk.download(d) for d in deps];"
+uv sync
+source .venv/bin/activate
 ```
+
+Install nltk data packages, if not already installed
+```bash
+python -c "import nltk; deps=['cmudict', 'wordnet', 'wordnet_ic', 'punkt_tab']; [nltk.download(d) for d in deps];"
+```
+(nltk 3.9+ uses `punkt_tab` instead of the older pickled `punkt` package.)
 
 
 A script is provided that will download and setup dependencies. Before running this script, you should have openSMILE
@@ -220,7 +227,7 @@ If you would like to make your custom pipelines and nodes available for others t
 ## Optional dependencies
 
 ##### Receptiviti LIWC
-LIWC2015 features from [receptiviti](https://www.receptiviti.ai/liwc-api-get-started) can also be added to the output. Simply copy `secrets.py.example`, rename it to `secrets.py` and fill in your api key. 
+LIWC2015 features from [receptiviti](https://www.receptiviti.ai/liwc-api-get-started) can also be added to the output. Simply copy `api_keys.py.example`, rename it to `api_keys.py` and fill in your api key. 
 
 ##### Matlab
 If you have matlab installed on your system, you can install the MATLAB Engine API. As long as your matlab script 

@@ -1,5 +1,4 @@
-import bz2
-from gensim.corpora import indexedcorpus, mmcorpus, Dictionary
+from gensim.corpora import Dictionary
 from gensim.models import ldamodel
 from scipy import stats
 import csv
@@ -60,15 +59,6 @@ def get_rstHistogram(path, f_trans, path_to_rst_python=None, path_to_rst=None, o
     return histogram
 
 
-def return_file(fname):
-    '''
-    Helper function for LDA. Files from training LDA model may be compressed
-    '''
-    if 'bz2' in fname:
-        return bz2.BZ2File(fname)
-    else:
-        return fname
-
 def get_lda_topics(transcript_utterances, trained_lda_model_filepath, trained_lda_wordids_filepath):
     '''
     Parameters
@@ -83,15 +73,12 @@ def get_lda_topics(transcript_utterances, trained_lda_model_filepath, trained_ld
     entrpy: float, entropy of all topic probabilities.
     '''
 
-    # Get files
-    trained_lda_model = return_file(trained_lda_model_filepath)
-    trained_lda_wordids = return_file(trained_lda_wordids_filepath)
-
-    # Load LDA model
-    lda_model = ldamodel.LdaModel.load(trained_lda_model)
+    # Load LDA model. gensim opens paths with smart_open, which transparently
+    # decompresses .bz2/.gz files, so compressed inputs can be passed as plain paths.
+    lda_model = ldamodel.LdaModel.load(trained_lda_model_filepath)
 
     # Load wordids as a dictionary
-    id2word = Dictionary.load_from_text(trained_lda_wordids)
+    id2word = Dictionary.load_from_text(trained_lda_wordids_filepath)
 
     # Convert transcript of tokens into a BoW document
     document_bow = []
