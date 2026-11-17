@@ -4,8 +4,9 @@ version = "0.2.0"
 description = "COre Variable Feature Extraction Feature Extractor: acoustic, lexical, syntactic and pragmatic feature extraction pipelines"
 readme = "README.md"
 license = { file = "LICENSE-2.0.txt" }
-# nltk >= 3.9 needs Python 3.10; gensim 4.4 ships wheels up to Python 3.13.
-requires-python = ">=3.10,<3.14"
+# Python 3.10 is end-of-life (Oct 2026) and the filelock security fixes need >= 3.11;
+# gensim 4.4 ships wheels up to Python 3.13.
+requires-python = ">=3.11,<3.14"
 dependencies = [
     "click>=8.1",
     "gensim>=4.3.3",        # first release with numpy 2 support; loads the 2018 lda_model_wiki files

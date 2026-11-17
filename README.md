@@ -99,7 +99,7 @@ python covfefe.py -i path/to/in/folder -o /path/to/put/out/files -p pipeline_nam
 Running ```python covfefe.py --help``` will print help options and give a list of available pipelines to run.
 
 ## Install
-COVFEFE requires Python 3.10 to 3.13. First download covfefe and set up a virtual environment:
+COVFEFE requires Python 3.11 to 3.13. First download covfefe and set up a virtual environment:
 ```bash
 git clone https://github.com/SPOClab-ca/COVFEFE.git
 cd COVFEFE
